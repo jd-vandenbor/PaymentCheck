@@ -16,7 +16,6 @@ namespace PaymentCheckService
             POST,
             PUT,
             DELETE
-
         }
 
         public string endpoint { get; set; }
@@ -33,14 +32,21 @@ namespace PaymentCheckService
             string strResponseValue = string.Empty;
 
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(endpoint);
-
+            System.Diagnostics.Debug.WriteLine("TEST: " + httpMethod.ToString());
+            System.Diagnostics.Debug.WriteLine("TEST: " + httpMethod);
             request.Method = httpMethod.ToString();
+            //System.Net.ICredentials creds = ;
+            //request.Headers.Add("Basic", Convert.ToBase64String(System.Text.ASCIIEncoding.ASCII.GetBytes($"sk_test_GXdRSMJMLiXJIDqc1qnEGWaA:")));
+            request.Headers.Add("Authorization", "Basic " + Convert.ToBase64String(System.Text.ASCIIEncoding.ASCII.GetBytes($"sk_test_GXdRSMJMLiXJIDqc1qnEGWaA:")));
+            //request.UserAgent = "sk_test_GXdRSMJMLiXJIDqc1qnEGWaA:";
+            //request.Headers["Authorization"] = "Basic sk_test_GXdRSMJMLiXJIDqc1qnEGWaA:";
             using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
             {
                 if (response.StatusCode != HttpStatusCode.OK)
                 {
                     throw new ApplicationException("error code: " + response.StatusCode.ToString());
                 }
+
                 //Process the response stream... (should be JSON)
                 using (Stream responseStream = response.GetResponseStream())
                 {
@@ -49,6 +55,7 @@ namespace PaymentCheckService
                         using (StreamReader reader = new StreamReader(responseStream))
                         {
                             strResponseValue = reader.ReadToEnd();
+
                         }//end of using StreamReader
                     }
                 }//End of using ResponseStream
