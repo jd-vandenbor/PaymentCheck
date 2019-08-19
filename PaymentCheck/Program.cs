@@ -17,7 +17,7 @@ namespace PaymentCheckService
 
             
             //string endpoint = "https://jsonplaceholder.typicode.com/todos/1";
-            string endpoint = "https://api.stripe.com/v1/customers?limit=3";
+            string endpoint = "https://api.stripe.com/v1/customers";
 
             RestClient rClient = new RestClient();
             rClient.endpoint = endpoint;
@@ -46,12 +46,35 @@ namespace PaymentCheckService
 
             System.Diagnostics.Debug.WriteLine(customers.Data.Count);
 
-            foreach(CustomersDatum customer in customers.Data)
+            //populate fake delinquints
+            int count = 0;
+            foreach (CustomersDatum customer in customers.Data)
             {
-                System.Diagnostics.Debug.WriteLine(customer.Id);
-                System.Diagnostics.Debug.WriteLine(customer.Delinquent);
+                if (count%5==0) {
+                    System.Diagnostics.Debug.WriteLine(count);
+
+                    customer.Delinquent = true;
+                }
+                count++;
+
 
             }
+
+            //create delinquent list
+            List<CustomersDatum> delinquents = new List<CustomersDatum>();
+            foreach (CustomersDatum customer in customers.Data)
+            {
+                if (customer.Delinquent == true)
+                {
+                    delinquents.Add(customer);
+                    System.Diagnostics.Debug.WriteLine(delinquents.Count);
+
+                }
+            }
+            System.Diagnostics.Debug.WriteLine(delinquents.Count);
+
+
+
 
         }
 
