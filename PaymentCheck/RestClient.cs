@@ -35,11 +35,9 @@ namespace PaymentCheckService
             System.Diagnostics.Debug.WriteLine("TEST: " + httpMethod.ToString());
             System.Diagnostics.Debug.WriteLine("TEST: " + httpMethod);
             request.Method = httpMethod.ToString();
-            //System.Net.ICredentials creds = ;
-            //request.Headers.Add("Basic", Convert.ToBase64String(System.Text.ASCIIEncoding.ASCII.GetBytes($"sk_test_GXdRSMJMLiXJIDqc1qnEGWaA:")));
+
             request.Headers.Add("Authorization", "Basic " + Convert.ToBase64String(System.Text.ASCIIEncoding.ASCII.GetBytes($"sk_test_GXdRSMJMLiXJIDqc1qnEGWaA:")));
-            //request.UserAgent = "sk_test_GXdRSMJMLiXJIDqc1qnEGWaA:";
-            //request.Headers["Authorization"] = "Basic sk_test_GXdRSMJMLiXJIDqc1qnEGWaA:";
+
             using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
             {
                 if (response.StatusCode != HttpStatusCode.OK)
